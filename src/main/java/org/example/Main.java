@@ -14,14 +14,20 @@ public class Main {
     public static void main(String[] args) {
         Person person = new Person("Alex", "Hirsh", 28);
 
-        System.out.println(person);
-        System.out.println(person.hashCode());
+        System.out.println("toString: " + person);
+        System.out.println("hashCode: " + person.hashCode());
 
-        Person person2 = new Person("Alex", "Hirsh", 28);
-        Person person3 = new Person("Marisha", "Jiluu", 34);
-        System.out.println(person.equals(person2));
-        System.out.println(person.equals(person3));
+        Person person1 = new Person("Alex", "Hirsh", 28);
+        Person person2 = new Person("Marisha", "Jiluu", 34);
 
-        person.serialize("serialize");
+        System.out.println("person: " + person);
+        System.out.println("person1: " + person1);
+        System.out.println("person2: " + person2);
+        System.out.println("person and person1 equals: " + person.equals(person1));
+        System.out.println("person and person2 equals: " + person.equals(person2));
+
+        person1.serialize("serialize");
+
+        System.out.println("deserialize person1: " + Person.deserialize("serialize", "person1"));
     }
 }

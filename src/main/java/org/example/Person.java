@@ -5,9 +5,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Класс описывающий персону
@@ -17,14 +15,16 @@ public class Person {
     private String lastName;
     private int age;
 
-    private transient Gson gson;
+    private static Gson gson = new Gson();
+    private static int countPersons = 0;
+    private int countPerson;
 
     public Person(String firstName, String lastName, int age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
 
-        gson = new Gson();
+        countPerson = countPersons++;
     }
 
     @Override
@@ -67,12 +67,28 @@ public class Person {
         File repo = new File(directory);
         repo.mkdirs();
 
-        repo = new File(directory, "person" + hashCode() + ".json");
+        repo = new File(directory, "person" + countPerson + ".json");
         try(FileWriter fw = new FileWriter(repo)) {
             String temp = gson.toJson(this, Person.class);
             fw.write(temp);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Метод для десериализации Персоны из файла json.
+     * @param directory
+     */
+    public static Person deserialize(String directory, String fileName) {
+        File repo = new File(directory, fileName + ".json");
+        try(BufferedReader fw = new BufferedReader(new FileReader(repo))) {
+            String json = fw.readLine();
+            System.out.println(json);
+            return gson.fromJson(json, Person.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
