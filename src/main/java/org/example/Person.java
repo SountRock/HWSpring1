@@ -79,6 +79,8 @@ public class Person {
     /**
      * Метод для десериализации Персоны из файла json.
      * @param directory
+     * @param fileName
+     * @return deserializePerson
      */
     public static Person deserialize(String directory, String fileName) {
         File repo = new File(directory, fileName + ".json");
